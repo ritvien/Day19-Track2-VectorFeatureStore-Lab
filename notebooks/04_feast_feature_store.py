@@ -83,8 +83,10 @@ for p in sorted(FEAST_DATA.glob("*.parquet")):
 # Chạy `feast apply` để Feast đọc file definition và ghi vào `registry.db`.
 
 # %%
+import sys
+FEAST_BIN = str(Path(sys.executable).parent / "feast")
 res = subprocess.run(
-    ["feast", "apply"],
+    [FEAST_BIN, "apply"],
     cwd=str(FEAST_DIR),
     capture_output=True, text=True, check=False,
 )
@@ -104,7 +106,7 @@ assert res.returncode == 0, f"feast apply failed: {res.stderr}"
 # %%
 end_dt = NOW.strftime("%Y-%m-%dT%H:%M:%S")
 res = subprocess.run(
-    ["feast", "materialize-incremental", end_dt],
+    [FEAST_BIN, "materialize-incremental", end_dt],
     cwd=str(FEAST_DIR),
     capture_output=True, text=True, check=False,
 )
